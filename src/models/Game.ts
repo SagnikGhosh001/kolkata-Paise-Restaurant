@@ -4,11 +4,8 @@ import { Round } from "./Round.ts";
 
 enum GameState {
   WAITING_FOR_PLAYERS = "WAITING_FOR_PLAYERS",
-
   STARTING = "STARTING",
-
   IN_PROGRESS = "IN_PROGRESS",
-
   FINISHED = "FINISHED",
 }
 
@@ -31,5 +28,22 @@ export class Game {
     this.#players = [];
     this.#hotels = [];
     this.#rounds = [];
+  }
+
+  getId() {
+    return this.#id;
+  }
+
+  toJSON() {
+    return {
+      id: this.#id,
+      gameState: this.#gameState,
+      totalRounds: this.#totalRounds,
+      currentRound: this.#currentRound,
+      revelRounds: this.#revelRounds,
+      players: this.#players,
+      hotels: this.#hotels,
+      rounds: this.#rounds,
+    };
   }
 }
