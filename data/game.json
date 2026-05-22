@@ -1,0 +1,136 @@
+{
+  "game": {
+    "id": "game_1",
+    "state": "ROUND_ACTIVE",
+    "totalRounds": 100,
+    "currentRound": 12,
+    "roundDurationMs": 15000,
+    "revealRounds": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "createdAt": "2026-05-22T18:00:00Z",
+    "players": {
+      "player_1": {
+        "id": "player_1",
+        "username": "sagnik",
+        "currentSelection": "hotel_2",
+        "history": [
+          {
+            "round": 1,
+            "hotelId": "hotel_1",
+            "success": true,
+            "loadFactor": 12
+          },
+          {
+            "round": 2,
+            "hotelId": "hotel_3",
+            "success": false,
+            "loadFactor": 35
+          }
+        ]
+      },
+      "player_2": {
+        "id": "player_2",
+        "username": "alex",
+        "currentSelection": "hotel_1",
+        "history": []
+      }
+    },
+    "hotels": {
+      "hotel_1": {
+        "id": "hotel_1",
+        "name": "Hotel 1"
+      },
+      "hotel_2": {
+        "id": "hotel_2",
+        "name": "Hotel 2"
+      },
+      "hotel_3": {
+        "id": "hotel_3",
+        "name": "Hotel 3"
+      }
+    },
+    "round": {
+      "id": 12,
+      "state": "ACTIVE",
+      "startedAt": "2026-05-22T18:10:00Z",
+      "endsAt": "2026-05-22T18:10:15Z",
+      "selections": {
+        "player_1": "hotel_2",
+        "player_2": "hotel_1"
+      },
+      "hotelPlayers": {
+        "hotel_1": [
+          "player_2"
+        ],
+        "hotel_2": [
+          "player_1"
+        ],
+        "hotel_3": []
+      },
+      "hotelLoads": {
+        "hotel_1": {
+          "playerCount": 1,
+          "loadFactor": 50
+        },
+        "hotel_2": {
+          "playerCount": 1,
+          "loadFactor": 50
+        },
+        "hotel_3": {
+          "playerCount": 0,
+          "loadFactor": 0
+        }
+      },
+      "winners": {
+        "hotel_1": "player_2",
+        "hotel_2": "player_1"
+      },
+      "results": {
+        "player_1": {
+          "hotelId": "hotel_2",
+          "success": true,
+          "loadFactor": 50
+        },
+        "player_2": {
+          "hotelId": "hotel_1",
+          "success": true,
+          "loadFactor": 50
+        }
+      }
+    },
+    "history": [
+      {
+        "round": 1,
+        "selections": {
+          "player_1": "hotel_1",
+          "player_2": "hotel_2"
+        },
+        "winners": {
+          "hotel_1": "player_1",
+          "hotel_2": "player_2"
+        },
+        "hotelLoads": {
+          "hotel_1": 50,
+          "hotel_2": 50
+        }
+      },
+      {
+        "round": 2,
+        "selections": {
+          "player_1": "hotel_3",
+          "player_2": "hotel_3"
+        },
+        "winners": {
+          "hotel_3": "player_2"
+        },
+        "hotelLoads": {
+          "hotel_3": 100
+        }
+      }
+    ]
+  }
+}
