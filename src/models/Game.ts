@@ -19,19 +19,38 @@ export class Game {
   #hotels: Hotel[];
   #rounds: Round[];
 
-  constructor(totalRounds: number) {
+  private constructor(
+    totalRounds: number,
+    hotels: Hotel[],
+    revelRounds: number[],
+  ) {
     this.#id = crypto.randomUUID();
     this.#gameState = GameState.STARTING;
     this.#totalRounds = totalRounds;
     this.#currentRound = 0;
-    this.#revelRounds = [];
+    this.#revelRounds = revelRounds;
     this.#players = [];
-    this.#hotels = [];
+    this.#hotels = hotels;
     this.#rounds = [];
+  }
+
+  static createGame(totalRounds: number, totalHotels: number) {
+    const revelRounds = Array.from({ length: 4 })
+      .map((_, i) => Math.floor((totalRounds * (i + 1) * 25) / 100));
+
+    const hotel = Array.from({ length: totalHotels })
+      .map((_, i) => new Hotel(`Hotel-${i}`));
+
+    return new Game(totalHotels, hotel, revelRounds);
   }
 
   getId() {
     return this.#id;
+  }
+
+  addPlayer(player: Player) {
+    this.#players.push(player);
+    return this;
   }
 
   toJSON() {
@@ -41,8 +60,8 @@ export class Game {
       totalRounds: this.#totalRounds,
       currentRound: this.#currentRound,
       revelRounds: this.#revelRounds,
-      players: this.#players,
-      hotels: this.#hotels,
+      players: this.#players.map((p) => p.toJson()),
+      hotels: this.#hotels.map((h) => h.toJson()),
       rounds: this.#rounds,
     };
   }

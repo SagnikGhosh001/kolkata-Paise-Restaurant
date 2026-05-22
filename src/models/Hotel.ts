@@ -6,4 +6,11 @@ export class Hotel {
     this.#name = name;
     this.#id = crypto.randomUUID();
   }
+
+  toJson() {
+    return {
+      id: this.#id,
+      name: this.#name,
+    };
+  }
 }
