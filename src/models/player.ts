@@ -11,6 +11,10 @@ export class Player {
     this.#currentSelection = null;
   }
 
+  isSameUserName(player: Player) {
+    return this.#username === player.#username;
+  }
+
   toJson() {
     return {
       id: this.#id,

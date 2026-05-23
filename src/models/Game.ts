@@ -1,3 +1,4 @@
+import { BadRequestError } from "../exception/BadRequestError.ts";
 import { Hotel } from "./Hotel.ts";
 import { Player } from "./player.ts";
 import { Round } from "./Round.ts";
@@ -49,8 +50,16 @@ export class Game {
   }
 
   addPlayer(player: Player) {
+    if (this.#isPlayerExist(player)) {
+      throw new BadRequestError("Player Already Exist with username");
+    }
+
     this.#players.push(player);
     return this;
+  }
+
+  #isPlayerExist(player: Player) {
+    return this.#players.some((p) => p.isSameUserName(player));
   }
 
   toJSON() {
