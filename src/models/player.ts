@@ -15,6 +15,14 @@ export class Player {
     return this.#username === player.#username;
   }
 
+  isSameId(playerId: string) {
+    return this.#id === playerId;
+  }
+
+  getId() {
+    return this.#id;
+  }
+
   toJson() {
     return {
       id: this.#id,

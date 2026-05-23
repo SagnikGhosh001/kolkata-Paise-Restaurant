@@ -2,6 +2,7 @@ import { NotFoundError } from "../errors/NotFoundError.ts";
 import { Game } from "../models/Game.ts";
 import { Player } from "../models/player.ts";
 import { JoinGameView } from "../views/joinGameView.ts";
+import { SelectHotelPayload } from "../views/selectHotelView.ts";
 
 export default class GameController {
   #games: Map<string, Game>;
@@ -42,6 +43,12 @@ export default class GameController {
     const game = this.getGame(gameId);
     const updatedGame = game.startGame();
     this.#games.set(updatedGame.getId(), updatedGame);
+    return updatedGame.toJSON();
+  }
+
+  selectHotel(payload: SelectHotelPayload) {
+    const game = this.getGame(payload.gameId);
+    const updatedGame = game.selectHotel(payload);
     return updatedGame.toJSON();
   }
 

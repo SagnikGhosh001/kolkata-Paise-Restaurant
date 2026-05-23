@@ -7,6 +7,14 @@ export class Hotel {
     this.#id = crypto.randomUUID();
   }
 
+  isSameId(hotelId: string) {
+    return this.#id === hotelId;
+  }
+
+  getId() {
+    return this.#id;
+  }
+
   toJson() {
     return {
       id: this.#id,

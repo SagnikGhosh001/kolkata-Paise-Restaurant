@@ -1,10 +1,11 @@
 import { BadRequestError } from "../errors/BadRequestError.ts";
+import { NotFoundError } from "../errors/NotFoundError.ts";
+import { SelectHotelPayload } from "../views/selectHotelView.ts";
 import { Hotel } from "./Hotel.ts";
 import { Player } from "./player.ts";
 import { Round } from "./Round.ts";
 
 enum GameState {
-  WAITING_FOR_PLAYERS = "WAITING_FOR_PLAYERS",
   STARTING = "STARTING",
   IN_PROGRESS = "IN_PROGRESS",
   FINISHED = "FINISHED",
@@ -61,7 +62,7 @@ export class Game {
       throw new BadRequestError("Game Is Already Fulled");
     }
 
-    if (this.isPlayerExist(player)) {
+    if (this.isUsernameExist(player)) {
       throw new BadRequestError("Player Already Exist with username");
     }
 
@@ -69,7 +70,7 @@ export class Game {
     return this;
   }
 
-  private isPlayerExist(player: Player) {
+  private isUsernameExist(player: Player) {
     return this.#players.some((p) => p.isSameUserName(player));
   }
 
@@ -81,6 +82,36 @@ export class Game {
     const round = new Round();
     this.#rounds.push(round);
     this.#gameState = GameState.IN_PROGRESS;
+    return this;
+  }
+
+  private getPlayer(playerId: string) {
+    return this.#players.find((p) => p.isSameId(playerId));
+  }
+
+  private getHotel(hotelId: string) {
+    return this.#hotels.find((h) => h.isSameId(hotelId));
+  }
+
+  selectHotel(payload: SelectHotelPayload) {
+    if (this.#gameState !== GameState.IN_PROGRESS) {
+      throw new BadRequestError(
+        "You can Only add you selection when game is going on",
+      );
+    }
+
+    const round = this.#rounds[this.#currentRound];
+    const player = this.getPlayer(payload.playerId);
+    if (!player) {
+      throw new NotFoundError("Player not found with id " + payload.playerId);
+    }
+
+    const hotel = this.getHotel(payload.hotelId);
+    if (!hotel) {
+      throw new NotFoundError("Hotel not found with id " + payload.hotelId);
+    }
+
+    round.addSelection(player, hotel, this.#totalPlayers);
     return this;
   }
 

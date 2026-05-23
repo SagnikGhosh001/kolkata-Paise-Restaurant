@@ -5,6 +5,7 @@ import {
   createGame,
   getGameById,
   joinGame,
+  selectHotel,
   startGame,
 } from "./handlers/gameHandler.ts";
 import { BadRequestError } from "./errors/BadRequestError.ts";
@@ -38,7 +39,9 @@ export const createApp = (gameController: GameController) => {
   app.get("/game/:gameId", getGameById);
   app.post("/game", createGame);
   app.post("/join-game", joinGame);
+
   app.put("/start-game/:gameId", startGame);
+  app.post("/select-hotel", selectHotel);
 
   return app;
 };

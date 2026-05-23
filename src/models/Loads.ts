@@ -5,4 +5,11 @@ export class Loads {
     this.#loadFactor = loadFactor;
     this.#playerCount = playerCount;
   }
+
+  toJson() {
+    return {
+      loadFactor: this.#loadFactor,
+      playerCount: this.#playerCount,
+    };
+  }
 }
