@@ -65,6 +65,13 @@ export class Round {
       );
     }
 
+    const alreadySelectedHotel = this.#selections.get(player.getId());
+    if (alreadySelectedHotel) {
+      throw new BadRequestError(
+        "You have already selected hotel for this round",
+      );
+    }
+
     const playersInHotel = this.#hotelPlayers.get(hotel.getId()) || [];
     playersInHotel.push(player);
     this.#hotelPlayers.set(hotel.getId(), playersInHotel);
