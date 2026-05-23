@@ -112,6 +112,17 @@ export class Game {
     }
 
     round.addSelection(player, hotel, this.#totalPlayers);
+
+    if (round.isRoundCompleted()) {
+      if (this.#currentRound === this.#totalRounds) {
+        this.#gameState = GameState.FINISHED;
+        return this;
+      }
+
+      this.#currentRound++;
+      this.#rounds.push(new Round());
+    }
+
     return this;
   }
 

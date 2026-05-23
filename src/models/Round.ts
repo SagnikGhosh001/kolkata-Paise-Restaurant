@@ -26,6 +26,10 @@ export class Round {
     this.#winners = new Map();
   }
 
+  isRoundCompleted() {
+    return this.#state === RoundState.COMPLETED;
+  }
+
   mapToJson<K, V>(
     map: Map<K, V>,
     keySerializer: (key: K) => string,
