@@ -49,7 +49,7 @@ export class Game {
     const hotel = Array.from({ length: totalHotels })
       .map((_, i) => new Hotel(`Hotel-${i}`));
 
-    return new Game(totalHotels, hotel, revelRounds, totalPlayers);
+    return new Game(totalRounds, hotel, revelRounds, totalPlayers);
   }
 
   getId() {
@@ -78,6 +78,8 @@ export class Game {
       throw new BadRequestError("Total Player should be " + this.#totalPlayers);
     }
 
+    const round = new Round();
+    this.#rounds.push(round);
     this.#gameState = GameState.IN_PROGRESS;
     return this;
   }
@@ -88,10 +90,11 @@ export class Game {
       gameState: this.#gameState,
       totalRounds: this.#totalRounds,
       currentRound: this.#currentRound,
+      totalPlayers: this.#totalPlayers,
       revelRounds: this.#revelRounds,
       players: this.#players.map((p) => p.toJson()),
       hotels: this.#hotels.map((h) => h.toJson()),
-      rounds: this.#rounds,
+      rounds: this.#rounds.map((r) => r.toJson()),
     };
   }
 }

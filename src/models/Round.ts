@@ -24,4 +24,15 @@ export class Round {
     this.#hotelLoads = new Map();
     this.#winners = new Map();
   }
+
+  toJson() {
+    return {
+      id: this.#id,
+      state: this.#state,
+      selection: this.#selections,
+      hotelPlayers: this.#hotelPlayers,
+      hotelLoads: this.#hotelLoads,
+      winners: this.#winners,
+    };
+  }
 }
