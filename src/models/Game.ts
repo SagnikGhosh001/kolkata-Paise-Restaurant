@@ -1,4 +1,4 @@
-import { BadRequestError } from "../exception/BadRequestError.ts";
+import { BadRequestError } from "../errors/BadRequestError.ts";
 import { Hotel } from "./Hotel.ts";
 import { Player } from "./player.ts";
 import { Round } from "./Round.ts";
@@ -19,11 +19,13 @@ export class Game {
   #players: Player[];
   #hotels: Hotel[];
   #rounds: Round[];
+  #totalPlayers: number;
 
   private constructor(
     totalRounds: number,
     hotels: Hotel[],
     revelRounds: number[],
+    totalPlayers: number,
   ) {
     this.#id = crypto.randomUUID();
     this.#gameState = GameState.STARTING;
@@ -33,16 +35,21 @@ export class Game {
     this.#players = [];
     this.#hotels = hotels;
     this.#rounds = [];
+    this.#totalPlayers = totalPlayers;
   }
 
-  static createGame(totalRounds: number, totalHotels: number) {
+  static createGame(
+    totalRounds: number,
+    totalHotels: number,
+    totalPlayers: number,
+  ) {
     const revelRounds = Array.from({ length: 4 })
       .map((_, i) => Math.floor((totalRounds * (i + 1) * 25) / 100));
 
     const hotel = Array.from({ length: totalHotels })
       .map((_, i) => new Hotel(`Hotel-${i}`));
 
-    return new Game(totalHotels, hotel, revelRounds);
+    return new Game(totalHotels, hotel, revelRounds, totalPlayers);
   }
 
   getId() {
@@ -50,7 +57,11 @@ export class Game {
   }
 
   addPlayer(player: Player) {
-    if (this.#isPlayerExist(player)) {
+    if (this.#players.length == this.#totalPlayers) {
+      throw new BadRequestError("Game Is Already Fulled");
+    }
+
+    if (this.isPlayerExist(player)) {
       throw new BadRequestError("Player Already Exist with username");
     }
 
@@ -58,8 +69,17 @@ export class Game {
     return this;
   }
 
-  #isPlayerExist(player: Player) {
+  private isPlayerExist(player: Player) {
     return this.#players.some((p) => p.isSameUserName(player));
+  }
+
+  startGame() {
+    if (this.#players.length < this.#totalPlayers) {
+      throw new BadRequestError("Total Player should be " + this.#totalPlayers);
+    }
+
+    this.#gameState = GameState.IN_PROGRESS;
+    return this;
   }
 
   toJSON() {
